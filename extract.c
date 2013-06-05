@@ -1,4 +1,16 @@
 /* gcc -o extract extract.c */
+
+/*
+** Extract everything from Hotline Miami WAD
+**
+** Coypright (C) 2013 Andrew K. <andy@mailbox.tu-berlin.de>
+** idea & soundtrack extractor from
+**  Ernst Friedrich Jonathan Wonneberger <info@jonwon.de>
+**  Sebastian Pipping <sebastian@pipping.org>
+**
+** Licensed under GPL v3
+*/
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
