@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
     if(fstat_res == -1)
     {
         fprintf(stderr, "Statting failed\n");
-        return -1;
+        return EXIT_FAILURE;
     }
 
     file_ptr = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
@@ -85,13 +85,13 @@ int main(int argc, char *argv[]) {
     if(file_ptr == MAP_FAILED)
     {
         fprintf(stderr, "Allocation failed\n");
-        return -1;
+        return EXIT_FAILURE;
     }
 
     if(((uint32_t *)file_ptr)[0] != 0x7846)
     {
         fprintf(stderr, "Magic not found, wrong file?\n");
-        return -1;
+        return EXIT_FAILURE;
     }
 
     num_files = ((uint32_t *)file_ptr)[1];
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
             S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP)) == -1)
         {
             fprintf(stderr, "Error creating file %s\n", filepath);
-            return -1;
+            return EXIT_FAILURE;
         }
 
         if(write(fd, cur_header_offset + files_array[i].offset, 
@@ -142,17 +142,17 @@ int main(int argc, char *argv[]) {
         else
         {
             fprintf(stderr, "Error writing file %s\n", filepath);
-            return -1;
+            return EXIT_FAILURE;
         }
         free(filedir);
         free(filepath);
         close(fd);
     }
     free(files_array);
-    return 0;
+    return EXIT_SUCCESS;
 
 usage:
     printf("Usage: %s [FILE]\n", argv[0]);
-    return -1;    
+    return EXIT_FAILURE;    
 }
 
