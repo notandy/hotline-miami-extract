@@ -133,6 +133,7 @@ int main(int argc, char *argv[]) {
         free(filepath);
         close(fd);
     }
+    free(files_array);
     return 0;
 
 usage:
