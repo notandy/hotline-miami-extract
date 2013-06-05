@@ -64,6 +64,13 @@ int main(int argc, char *argv[]) {
     if(fd < 0)
         goto usage;
 
+    const int fstat_res = fstat(fd, &s);
+    if(fstat_res == -1)
+    {
+        fprintf(stderr, "Statting failed\n");
+        return -1;
+    }
+
     file_ptr = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     close(fd);
 
