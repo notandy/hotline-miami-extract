@@ -30,6 +30,14 @@ struct files {
     uint32_t offset;
 };
 
+static int mkdir_report(const char * dir) {
+    const mkdir_res = mkdir(dir, S_IRWXU);
+    if(mkdir_res == 0) {
+        printf("Directory \"%s\" created.\n", dir);
+    }
+    return mkdir_res;
+}
+
 static void _mkdir(const char *dir) {
     char tmp[256];
     char *p = NULL;
@@ -42,10 +50,10 @@ static void _mkdir(const char *dir) {
     for(p = tmp + 1; *p; p++)
         if(*p == '/') {
             *p = 0;
-            mkdir(tmp, S_IRWXU);
+            mkdir_report(tmp);
             *p = '/';
         }
-    mkdir(tmp, S_IRWXU);
+    mkdir_report(tmp);
 }
 
 int main(int argc, char *argv[]) {
