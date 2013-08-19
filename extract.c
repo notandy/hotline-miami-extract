@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     struct files *files_array;
     struct stat s;
     void *file_ptr;
-    uint32_t num_files, i; 
+    uint32_t header_end, num_files, i; 
     int fd;
     char *cur_header_offset;
     
@@ -88,13 +88,16 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    if(((uint32_t *)file_ptr)[0] != 0x7846)
+    header_end = ((uint32_t *)file_ptr)[0];
+    num_files = ((uint32_t *)file_ptr)[1];
+
+    // Header must be at least (4 + 1 + 4 + 4) bytes per contained file
+    if(header_end >= s.st_size || header_end < 8 + num_files * 13)
     {
-        fprintf(stderr, "Magic not found, wrong file?\n");
+        fprintf(stderr, "Bad header, wrong file?\n");
         return EXIT_FAILURE;
     }
 
-    num_files = ((uint32_t *)file_ptr)[1];
     printf("Found %u files\n", num_files);
     cur_header_offset = 8 + (char *)file_ptr;
 
